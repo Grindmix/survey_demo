@@ -1,0 +1,8 @@
+services:
+  web:
+    build: ./survey_demo
+    command: sh -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
+    volumes:
+      - ./survey_demo/:/usr/src/app/
+    ports:
+      - 8000:8000

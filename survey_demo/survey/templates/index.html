@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <h3>Доступные опросы:</h3>
+    <ul>
+        {% for survey in survey_list %}
+            {% if survey.require_login == True %}
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'survey-form' survey.pk %}">{{ survey.title }}</a></li>
+                {% endif %}
+            {% elif survey.require_login == False%}
+                <li><a href="{% url 'survey-form' survey.pk %}">{{ survey.title }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock %}

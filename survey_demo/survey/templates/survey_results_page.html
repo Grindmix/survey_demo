@@ -1,0 +1,43 @@
+{% extends 'base_generic.html' %}
+{% load getitem %}
+{% block content %}
+    {% if user.is_authenticated %}
+    {% if user.get_username == survey_results.user or user.is_staff %}
+    <h1>Результат опроса: {{ survey_results.survey.title }}</h1>
+    <p><strong>id: {{ survey_results.id }}</strong></p>
+    {% if survey_results.user %}
+        <p><strong>Пользователь: {{ survey_results.user }}</strong></p>
+    {% endif %}
+    <ul>
+        {% for qac in result_choices %}
+            <li>
+                <p>Вопрос: {{qac.question }}</p>
+
+                {% if qac.question.choice_type == 'r'%}
+                    <p>Выбор: {{ choices|get_item:qac.question.id }}</p>
+
+                {% elif qac.question.choice_type == 't'%}
+                    <p>{{ choices|get_item:qac.question.id }}</p>
+
+                {% elif qac.question.choice_type == 'c'%}
+                    <p>Выбор(ы):</p>
+                    <ul>
+                    {% for choice in choices|get_item:qac.question.id %}
+                        <li>{{ choice }}</li>
+                    {% endfor %}
+                    </ul>
+                    <p></p>
+                {% endif %}
+
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>У вас нет доступа к этой странице.</p>
+    <p><a href="{% url 'index'%}">На главную.</a></p>
+    {% endif %}
+    {% else %}
+    <p>У вас нет доступа к этой странице.</p>
+    <p><a href="{% url 'index'%}">На главную.</a></p>
+    {% endif %}
+{% endblock %}

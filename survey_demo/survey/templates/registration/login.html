@@ -1,0 +1,31 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    {% if form.errors %}
+        <p>Введенные логин и пароль не подходят. Попробуйте еще раз.</p>
+    {% endif %}
+
+    {% if next %}
+        {% if user.is_authenficated %}
+            <p>Ваш аккаунт не имеет доступа к этой странице. Пожалуйста ввойдите с аккаунта который имеет доступ.
+            </p>
+        {% endif %}
+    {% endif %}
+
+    <form action="{%url 'login'%}" method="POST">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Логин:</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td>Пароль:</td>
+                <td>{{ form.password }}</td>
+            </tr>
+        </table>
+        <input type="submit" value="login">
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+
+{% endblock %}

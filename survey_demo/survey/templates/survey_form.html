@@ -1,0 +1,43 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    {% if survey.require_login == True %}
+        {% if user.is_authenticated %}
+            <h1 style="text-align:center;">Опрос: {{ survey.title }}</h1>
+            <p style="text-align:center;">Дата публикации: {{ survey.pub_date }}</p>
+            <form action="" method="POST" style="text-align:center;">
+                {% csrf_token %}
+                <td>
+                {% for field in form %}
+                    <tr>
+                        <ul style="list-style-type: none;">
+                            <li><label for="">{{ field.label }}:</label></li>
+                            <li>{{ field }}</li>
+                        </ul>
+                    </tr>
+                {% endfor %}
+                </td>
+                <input type="submit" value="submit">
+            </form>
+        {% endif %}
+    {% elif survey.require_login == False%}
+        <h1 style="text-align:center;">Опрос: {{ survey.title }}</h1>
+        <p style="text-align:center;">Дата публикации: {{ survey.pub_date }}</p>
+        <form action="" method="POST" style="text-align:center;">
+            {% csrf_token %}
+            <td>
+            {% for field in form %}
+                <tr>
+                    <ul style="list-style-type: none;">
+                        <li><label for="">{{ field.label }}:</label></li>
+                        <li>{{ field }}</li>
+                    </ul>
+                </tr>
+            {% endfor %}
+            </td>
+            <input type="submit" value="submit">
+        </form>
+    {% else %}
+        <p>Вы должны залогинится чтобы пройти этот опрос.</p>
+    {% endif %}
+{% endblock %}
